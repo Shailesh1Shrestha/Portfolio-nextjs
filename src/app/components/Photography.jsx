@@ -17,22 +17,21 @@ function Photography({ slides }) {
     if (current === slides.length - 1) setCurrent(0);
     else setCurrent(current + 1);
   };
+
   return (
     <div className="overflow-hidden relative h-auto">
-          <div className = "text-headingColor text-center mb-20">
-        <p className='text-xl font-semibold mb-5'>Photos</p>
-        <h2 className='md:text-5xl text-4xl font-bold'>My Photography</h2>
-        
+      <div className="text-headingColor text-center mb-20">
+        <p className="text-xl font-semibold mb-5">Photos</p>
+        <h2 className="md:text-5xl text-4xl font-bold">My Photography</h2>
       </div>
       <div
         className={`flex transition ease-out duration-40`}
         style={{
           transform: `translateX(-${current * 100}%)`,
-          
         }}
       >
-        {slides.map((s) => {
-          return <img src={s} />;
+        {slides.map((s, i) => {
+          return <img src={s} alt={`Slide ${i}`} key={`slide-${i}`} />;
         })}
       </div>
 
@@ -52,10 +51,18 @@ function Photography({ slides }) {
               onClick={() => {
                 setCurrent(i);
               }}
-              key={"circle" + i}
-              className={`rounded-full w-5 h-5 cursor-pointer  ${
-                i == current ? "bg-white" : "bg-gray-500"
+              key={`circle-${i}`}
+              className={`rounded-full w-5 h-5 cursor-pointer ${
+                i === current ? "bg-white" : "bg-gray-500"
               }`}
+              role="button" // Added role attribute for accessibility
+              tabIndex={0} // Added tabIndex for keyboard accessibility
+              onKeyDown={(e) => {
+                // Handle keyboard navigation
+                if (e.key === "Enter" || e.key === " ") {
+                  setCurrent(i);
+                }
+              }}
             ></div>
           );
         })}
@@ -65,4 +72,3 @@ function Photography({ slides }) {
 }
 
 export default Photography;
-
